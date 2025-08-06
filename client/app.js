@@ -1,7 +1,7 @@
 const loginForm = document.querySelector('#welcome-form');
 const messagesSection = document.querySelector('#messages-section');
 const messagesList = document.querySelector('#messages-section__list');
-const addMessageForm = document.querySelector('#add-message-form');
+const addMessageForm = document.querySelector('#add-messages-form');
 const userNameInput = document.querySelector('#username');
 const messageContentInput = document.querySelector('#message-content');
 
@@ -15,9 +15,23 @@ function login(e) {
     messagesSection.classList.add('show');
     console.log(userName);
   } else {
-    console.log('błąd');
+    alert('The field is empty');
   }
 }
+function addMessage() {
+ 
+}
+function sendMessage(e) {
+  e.preventDefault();
+  if (!messageContentInput.value) {
+    alert('The field is empty');
+  }
+  return addMessage(userName(userName), messageContentInput.value);
+}
+
 loginForm.addEventListener('submit', (e) => {
   login(e);
+});
+addMessageForm.addEventListener('submit', (e) => {
+  sendMessage(e);
 });
