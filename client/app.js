@@ -1,6 +1,6 @@
 const loginForm = document.querySelector('#welcome-form');
 const messagesSection = document.querySelector('#messages-section');
-const messagesList = document.querySelector('#messages-section__list');
+const messagesList = document.querySelector('#messages-list');
 const addMessageForm = document.querySelector('#add-messages-form');
 const userNameInput = document.querySelector('#username');
 const messageContentInput = document.querySelector('#message-content');
@@ -18,21 +18,25 @@ function login(e) {
     alert('The field is empty');
   }
 }
-function addMessage() {
+function addMessage(author, content) {
   const li = document.createElement('li');
-  const author = document.createElement('h3');
-  const div = document.createElement('div');
-  author.classList.add('message__author');
-  div.classList.add('message__content');
-  li.append(author, div);
-  messagesList.appendChild(li);
+  li.classList.add('message', 'message--received');
+  if (author === userName) {
+    li.classList.add('message--self');
+  }
+  li.innerHTML = `<h3 class="message__author">${
+    userName === author ? 'You' : author
+  }</h3>
+  <div class="message__content">${content}</div>`;
+  messagesList.append(li);
+  messageContentInput.value = '';
 }
 function sendMessage(e) {
   e.preventDefault();
   if (!messageContentInput.value) {
     alert('The field is empty');
   }
-  return addMessage(addMessage(userName), messageContentInput.value);
+  addMessage(userName, messageContentInput.value);
 }
 
 loginForm.addEventListener('submit', (e) => {
