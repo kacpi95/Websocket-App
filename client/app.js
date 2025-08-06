@@ -19,14 +19,20 @@ function login(e) {
   }
 }
 function addMessage() {
- 
+  const li = document.createElement('li');
+  const author = document.createElement('h3');
+  const div = document.createElement('div');
+  author.classList.add('message__author');
+  div.classList.add('message__content');
+  li.append(author, div);
+  messagesList.appendChild(li);
 }
 function sendMessage(e) {
   e.preventDefault();
   if (!messageContentInput.value) {
     alert('The field is empty');
   }
-  return addMessage(userName(userName), messageContentInput.value);
+  return addMessage(addMessage(userName), messageContentInput.value);
 }
 
 loginForm.addEventListener('submit', (e) => {
