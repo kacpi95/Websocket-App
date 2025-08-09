@@ -7,19 +7,29 @@ const server = app.listen(8000, () => {
   console.log('Server is runing on port: 8000');
 });
 const messages = [];
+const users = [];
 
 app.use(express.static(path.join(__dirname, 'client')));
 
 const io = socket(server);
 io.on('connection', (socket) => {
   console.log('New client! Its id – ' + socket.id);
+  socket.on('join', (user) => {
+    console.log(`Dodano nowego użytkowniak do listy ${user} ${socket.id}`);
+    users.push({ user, id: socket.id });
+  });
   socket.on('message', (message) => {
     console.log("Oh, I've got something from " + socket.id);
     messages.push(message);
     socket.broadcast.emit('message', message);
   });
   socket.on('disconnect', () => {
-    console.log('Oh, socket ' + socket.id + ' has left');
+    const user = users.findIndex((user) => user.id === socket.id);
+    if (user !== -1) {
+      users.splice(user, 1);
+    }
+    console.log('Aktualna lista użytkowników ', users);
+    // console.log('Oh, socket ' + socket.id + ' has left');
   });
-  console.log("I've added a listener on message and disconnect events \n");
+  // console.log("I've added a listener on message and disconnect events \n");
 });
