@@ -8,6 +8,13 @@ const messageContentInput = document.querySelector('#message-content');
 let userName = '';
 const socket = io();
 socket.on('message', (event) => addMessage(event.author, event.content));
+socket.on('newUser', (userName) =>
+  addMessage('Chat Bot', `${userName} has joined the conversation!`)
+);
+socket.on('removeUser', (userName) =>
+  addMessage('Chat Bot', `${userName} has left the conversation... :(`)
+);
+
 function login(e) {
   e.preventDefault();
   if (userNameInput.value) {
@@ -15,15 +22,18 @@ function login(e) {
     loginForm.classList.remove('show');
     messagesSection.classList.add('show');
     console.log(userName);
-    socket.emit('join', userName );
+    socket.emit('join', userName);
   } else {
     alert('The field is empty');
   }
 }
+
 function addMessage(author, content) {
   const li = document.createElement('li');
   li.classList.add('message', 'message--received');
-  if (author === userName) {
+  if (author === 'Chat Bot') {
+    li.classList.add('message-bot');
+  } else if (author === userName) {
     li.classList.add('message--self');
   }
   li.innerHTML = `<h3 class="message__author">${
@@ -33,6 +43,7 @@ function addMessage(author, content) {
   messagesList.append(li);
   messageContentInput.value = '';
 }
+
 function sendMessage(e) {
   e.preventDefault();
 
